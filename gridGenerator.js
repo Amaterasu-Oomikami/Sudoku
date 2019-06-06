@@ -48,10 +48,13 @@ class GridGenerator {
                 let blank = false;
                 for (let row = 0; row < 9; row++) {
                     for (let col = 0; col < 9; col++) {
-                        if (!grid.getCell(row, col).visible) {
-                            grid.computeCellPossiblities(constraintChecker, grid.getCell(row, col));
-                            if (!grid.getCell(row, col).possibilities.length) {
+                        let cell = grid.getCell(row, col);
+                        if (!cell.visible) {
+                            grid.computeCellPossiblities(constraintChecker, cell);
+                            if (!cell.possibilities.length) {
                                 blank = true;
+                            } else {
+                                cell.setNumber(cell.possibilities[Math.floor(random(cell.possibilities.length))])
                             }
                         }
                     }
@@ -64,15 +67,22 @@ class GridGenerator {
                     console.log("Can't solve grid, generating a new one...")
                     break;
                 }
-            } while (numberOfVisible < 80);
+            } while (numberOfVisible < 81);
         } while (!success);
+        for (let row = 0; row < 9; row++) {
+            let s = '';
+            for (let col = 0; col < 9; col++) {
+                s += grid.getCell(row, col).number + '';
+            }
+            print(s);
+        }
         return grid;
     }
 
     createHoles(grid, numberOfHoles) {
         for (let n = 0; n < numberOfHoles; n++) {
-            let row = Math.floor(Math.random() * 8);
-            let col = Math.floor(Math.random() * 8);
+            let row = Math.floor(random(8));
+            let col = Math.floor(random(8));
             grid.getCell(row, col).setNumber(0);
         }
         for (let row = 0; row < 9; row++) {

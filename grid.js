@@ -6,9 +6,7 @@ class Grid {
         for (let row = 0; row < 9; row++) {
             this.data[row] = new Array();
             for (let col = 0; col < 9; col++) {
-                this.data[row][col] = grid ?
-                new Cell(grid[idx], row, col, grid[idx] > 0) :
-                new Cell(0, row, col, false);
+                this.data[row][col] = grid ? new Cell(grid[idx], row, col, grid[idx] > 0) : new Cell(0, row, col, false);
                 idx++;
             }
         }
@@ -75,7 +73,6 @@ class Grid {
         let col = constraintChecker.cols[cell.col];
         let row = constraintChecker.rows[cell.row];
         let sqr = constraintChecker.squares[Math.floor(cell.row / 3) + Math.floor(cell.col / 3) + 2 * Math.floor(cell.col / 3)];
-
         for (let n = 1; n <= 9; n++) {
             if (n != cell.number) {
                 let isPossible = true;
