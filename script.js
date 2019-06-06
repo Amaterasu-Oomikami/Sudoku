@@ -134,8 +134,6 @@ function draw() {
         if (play) play.hide();
         if (help) help.hide();
         if (back) back.hide();
-        if (restart) restart.hide();
-        if (menu) menu.hide();
         createCanvas(690, 540);
         background(250, 250, 250);
         textSize(20);
