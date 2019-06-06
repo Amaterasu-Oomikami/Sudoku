@@ -83,7 +83,9 @@ function howtoplay() {
 
 let counter = 0;
 let sudoku, interval;
-let numberOfHoles = Math.floor(random(50, 60));
+let numberOfHoles = Math.floor(Math.random() * 11 + 47);
+
+console.log(numberOfHoles);
 
 function start() {
     counter = 0;

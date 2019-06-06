@@ -60,7 +60,9 @@ class GridGenerator {
                     }
                 }
                 if (blank) {
-                    cell.setNumber(0);
+                    success = false;
+                    console.log("Can't solve grid, generating a new one...")
+                    break;
                 }
                 if (numberOfIteration > 10000) {
                     success = false;
@@ -81,8 +83,11 @@ class GridGenerator {
 
     createHoles(grid, numberOfHoles) {
         for (let n = 0; n < numberOfHoles; n++) {
-            let row = Math.floor(random(8));
-            let col = Math.floor(random(8));
+            let row = 0, col = 0;
+            do {
+                row = Math.floor(random(8));
+                col = Math.floor(random(8));
+            } while (!grid.getCell(row, col).number);
             grid.getCell(row, col).setNumber(0);
         }
         for (let row = 0; row < 9; row++) {
