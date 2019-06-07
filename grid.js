@@ -55,11 +55,7 @@ class Grid {
                 } else if (showPossiblities) {
                     textSize(10);
                     textStyle(NORMAL);
-                    let str = this.getCell(row, col).possibilities[0];;
-                    for (let p = 1; p < this.getCell(row, col).possibilities.length; p++) {
-                        str += ',' + this.getCell(row, col).possibilities[p];
-                    }
-                    text(str, col * size + 10, row * size + size - 10);
+                    text(this.getCell(row, col).possibilities.join(','), col * size + 10, row * size + size - 10);
                 }
                 this.getCell(row, col).error = false;
                 this.getCell(row, col).lightError = false;

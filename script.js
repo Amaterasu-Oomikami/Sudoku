@@ -2,7 +2,7 @@ let bg, ngnl;
 
 function preload() {
     ngnl = loadFont('assets/no_game_no_life.ttf');
-    gothic = loadFont('assets/JLSDataGothicC_NC.otf')
+    gothic = loadFont('assets/JLSDataGothicC_NC.otf');
 }
 
 function setup() {
@@ -83,14 +83,12 @@ function howtoplay() {
 
 let counter = 0;
 let sudoku, interval;
-let numberOfHoles = Math.floor(Math.random() * 11 + 47);
-
-console.log(numberOfHoles);
+let difficulty = 5;
 
 function start() {
     counter = 0;
     sudoku = new Sudoku(60);
-    sudoku.generateGrid(numberOfHoles);
+    sudoku.generateGrid(difficulty);
     if (!started) restart = createDiv('Restart');
     restart.position(575, 450);
     restart.style('font-size', '25px');
