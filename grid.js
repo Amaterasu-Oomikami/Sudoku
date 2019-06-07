@@ -1,7 +1,6 @@
 class Grid {
     constructor(grid) {
         this.data = new Array();
-
         let idx = 0;
         for (let row = 0; row < 9; row++) {
             this.data[row] = new Array();
@@ -62,7 +61,6 @@ class Grid {
             }
         }
     }
-
 
     computeCellPossiblities(constraintChecker, cell) {
         cell.possibilities = [];

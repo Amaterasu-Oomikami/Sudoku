@@ -33,34 +33,36 @@ class GridGenerator {
         return grid;
     }
 
-    checkRow(val, row, sudoku) {
-        return sudoku[row].includes(val);
-    }
-
-    checkCol(val, col, sudoku) {
-        let tmp = new Array();
-        for (let i = 0; i < 9; i++) {
-            tmp.push(sudoku[i][col]);
-        }
-        return tmp.includes(val);
-    }
-
-    buildSquare(i1, j1, i2, j2, square, sudoku) {
-        for (let idx = 0; idx < 3; idx++) {
-            square[idx] = new Array();
-            for (let i = i2; i < j2; i++) {
-                for (let j = i1; j < j1; j++) {
-                    square[idx].push(sudoku[i][j]);
-                }
-            }
-        }
-    }
-
     shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
+    }
+
+    isValid(x, y, val, sudoku) {
+        for (let i = 0; i < 9; i++) {
+            if (i !== y && sudoku[x][i] === val) {
+                return false;
+            }
+        }
+        for (let i = 0; i < 9; i++) {
+            if (i !== x && sudoku[i][y] === val) {
+                return false;
+            }
+        }
+        let row = Math.floor(x / 3) * 3;
+        let col = Math.floor(y / 3) * 3;    
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let r = i + row;
+                let c = j + col;           
+                if (r !== x && c !== y && sudoku[r][c] === val) {
+                   return false;
+                }
+            }
+        }
+        return true;
     }
 
     checkGrid(sudoku) {
@@ -81,44 +83,14 @@ class GridGenerator {
             col = i % 9;
             if (!sudoku[row][col]) {
                 for (let val = 1; val <= 9; val++) {
-                    if (!this.checkRow(val, row, sudoku)) {
-                        if (!this.checkCol(val, col, sudoku)) {
-                            let square = new Array(3);
-                            if (row < 3) {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 0, 3, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 0, 3, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 0, 3, square, sudoku);
-                                }
-                            } else if (row < 6) {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 3, 6, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 3, 6, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 3, 6, square, sudoku);
-                                }
-                            } else {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 6, 9, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 6, 9, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 6, 9, square, sudoku);
-                                }
-                            }
-                            if (!square[0].concat(square[1], square[2]).includes(val)) {
-                                sudoku[row][col] = val;
-                                if (this.checkGrid(sudoku)) {
-                                    this.counter++;
-                                    break;
-                                } else {
-                                    if (this.solveGrid(sudoku)) {
-                                        return true;
-                                    }
-                                }
+                    if (this.isValid(row, col, val, sudoku)) {
+                        sudoku[row][col] = val;
+                        if (this.checkGrid(sudoku)) {
+                            this.counter++;
+                            break;
+                        } else {
+                            if (this.solveGrid(sudoku)) {
+                                return true;
                             }
                         }
                     }
@@ -138,43 +110,13 @@ class GridGenerator {
                 this.shuffle(this.number);
                 for (let j = 0; j < 9; j++) {
                     let val = this.number[j];
-                    if (!this.checkRow(val, row, sudoku)) {
-                        if (!this.checkCol(val, col, sudoku)) {
-                            let square = new Array(3);
-                            if (row < 3) {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 0, 3, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 0, 3, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 0, 3, square, sudoku);
-                                }
-                            } else if (row < 6) {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 3, 6, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 3, 6, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 3, 6, square, sudoku);
-                                }
-                            } else {
-                                if (col < 3) {
-                                    this.buildSquare(0, 3, 6, 9, square, sudoku);
-                                } else if (col < 6) {
-                                    this.buildSquare(3, 6, 6, 9, square, sudoku);
-                                } else {
-                                    this.buildSquare(6, 9, 6, 9, square, sudoku);
-                                }
-                            }
-                            if (!square[0].concat(square[1], square[2]).includes(val)) {
-                                sudoku[row][col] = val;
-                                if (this.checkGrid(sudoku)) {
-                                    return true;
-                                } else {
-                                    if (this.fillGrid(sudoku)) {
-                                        return true;
-                                    }
-                                }
+                    if (this.isValid(row, col, val, sudoku)) {
+                        sudoku[row][col] = val;
+                        if (this.checkGrid(sudoku)) {
+                            return true;
+                        } else {
+                            if (this.fillGrid(sudoku)) {
+                                return true;
                             }
                         }
                     }
