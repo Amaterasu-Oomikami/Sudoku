@@ -146,7 +146,7 @@ class GridGenerator {
             }
             this.counter = 0;
             this.solveGrid(copy);
-            if (this.counter !== 1) {
+            if (this.counter > 1) {
                 sudoku[row][col] = backup;
                 attempts--;
             }

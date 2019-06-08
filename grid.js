@@ -16,13 +16,15 @@ class Grid {
     }
 
     draw(size, selectedCell, showPossiblities) {
+        strokeWeight(5);
         fill(255, 255, 255, 255);
         rect(0, 0, size * 9, size * 9);
+        strokeWeight(1);
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
                 fill(255, 255, 255, 128);
                 if (row % 3 === 0 && col % 3 === 0) {
-                    strokeWeight(3);
+                    strokeWeight(5);
                     rect(col * size, row * size, size * 3, size * 3);
                     strokeWeight(1);
                 }
@@ -37,24 +39,24 @@ class Grid {
                 } else {
                     fill(255, 255, 255, 128);
                 }
-                rect(col * size, row * size, size - 1, size - 1);
+                rect(col * size, row * size, size - 1.5, size - 1.5);
                 if (this.getCell(row, col).error || this.getCell(row, col) === selectedCell) {
                     fill(255, 255, 255, 255);
                 } else {
                     fill(0, 0, 0, 255);
                 }
                 if (this.getCell(row, col).visible) {
-                    textSize(16);
                     if (this.getCell(row, col).isFixed) {
-                        textStyle(BOLD);
+                        textSize(24);
                     } else {
-                        textStyle(NORMAL);
+                        textSize(18);
                     }
-                    text(this.getCell(row, col).number, col * size + size / 2.25, row * size + size / 1.75);
+                    textAlign(CENTER, CENTER);
+                    text(this.getCell(row, col).number, col * size + size / 2, row * size + size / 2);
                 } else if (showPossiblities) {
                     textSize(10);
-                    textStyle(NORMAL);
-                    text(this.getCell(row, col).possibilities.join(','), col * size + 10, row * size + size - 10);
+                    textAlign(CENTER, CENTER);
+                    text(this.getCell(row, col).possibilities.join(','), col * size + 20, row * size + size - 15);
                 }
                 this.getCell(row, col).error = false;
                 this.getCell(row, col).lightError = false;
